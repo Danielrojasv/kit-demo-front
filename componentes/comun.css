@@ -1,0 +1,53 @@
+/* Tema oscuro compartido de los componentes de demo. */
+:root {
+  --fondo: #0d1420;
+  --panel: #141e2e;
+  --carta: #1b2940;
+  --borde: #2a3b57;
+  --texto: #dce6f5;
+  --tenue: #7e92b3;
+  --acento: #27c3e8;
+  --ok: #3ddc97;
+  --rojo: #ff5d6c;
+  --ambar: #ffc764;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 15px/1.45 system-ui, sans-serif;
+}
+header.barra {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--borde);
+}
+header.barra h1 { font-size: 17px; font-weight: 600; margin: 0; }
+header.barra a { color: var(--tenue); text-decoration: none; font-size: 13px; }
+header.barra a:hover { color: var(--acento); }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 14px;
+}
+.panel h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--tenue);
+  margin: 0 0 10px;
+}
+button.accion {
+  background: var(--acento);
+  color: var(--fondo);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.accion:hover { filter: brightness(1.1); }

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gráficos animados</title>
+<link rel="stylesheet" href="comun.css">
+<style>
+  main { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px 20px; }
+  .grafico { height: 320px; }
+</style>
+</head>
+<body>
+<header class="barra">
+  <h1>Gráficos animados</h1>
+  <a href="index.html">← catálogo</a>
+  <span style="margin-left:auto"></span>
+  <button class="accion" id="datos">Nuevos datos</button>
+</header>
+<main>
+  <div class="panel"><h2>Nivel de riesgo</h2><div class="grafico" id="g1"></div></div>
+  <div class="panel"><h2>Serie en vivo</h2><div class="grafico" id="g2"></div></div>
+  <div class="panel"><h2>Eventos por categoría</h2><div class="grafico" id="g3"></div></div>
+  <div class="panel"><h2>Distribución semanal</h2><div class="grafico" id="g4"></div></div>
+</main>
+<script src="../vendor/echarts.min.js"></script>
+<script>
+const texto = "#dce6f5", tenue = "#7e92b3", borde = "#2a3b57", acento = "#27c3e8";
+const base = { textStyle: { color: texto }, backgroundColor: "transparent" };
+const ejes = {
+  axisLine: { lineStyle: { color: borde } },
+  axisLabel: { color: tenue },
+  splitLine: { lineStyle: { color: borde, opacity: 0.4 } },
+};
+
+const g1 = echarts.init(document.getElementById("g1"), null, { renderer: "canvas" });
+const g2 = echarts.init(document.getElementById("g2"));
+const g3 = echarts.init(document.getElementById("g3"));
+const g4 = echarts.init(document.getElementById("g4"));
+
+function azar(n, max) { return Array.from({ length: n }, () => Math.round(Math.random() * max)); }
+
+function pintar() {
+  g1.setOption({ ...base, series: [{
+    type: "gauge", min: 0, max: 100, progress: { show: true, width: 14 },
+    axisLine: { lineStyle: { width: 14, color: [[1, borde]] } },
+    pointer: { itemStyle: { color: acento } },
+    axisTick: { show: false }, splitLine: { show: false },
+    axisLabel: { color: tenue, distance: 20 },
+    detail: { valueAnimation: true, color: texto, fontSize: 34, formatter: "{value}%" },
+    itemStyle: { color: acento },
+    data: [{ value: 20 + Math.round(Math.random() * 70) }],
+  }] });
+
+  const horas = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  g2.setOption({ ...base, xAxis: { type: "category", data: horas, ...ejes },
+    yAxis: { type: "value", ...ejes }, grid: { left: 40, right: 16, top: 20, bottom: 28 },
+    series: [{ type: "line", smooth: true, data: azar(24, 90), areaStyle: { opacity: 0.18 },
+      lineStyle: { color: acento, width: 3 }, itemStyle: { color: acento }, animationDuration: 1200 }] });
+
+  g3.setOption({ ...base, xAxis: { type: "value", ...ejes },
+    yAxis: { type: "category", data: ["Operación", "Sensores", "Documentos", "Manuales", "Críticos"], ...ejes },
+    grid: { left: 90, right: 16, top: 10, bottom: 28 },
+    series: [{ type: "bar", data: azar(5, 60), itemStyle: { color: acento, borderRadius: 4 }, animationDelay: (i) => i * 120 }] });
+
+  g4.setOption({ ...base, radar: {
+    indicator: ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"].map((d) => ({ name: d, max: 50 })),
+    axisName: { color: tenue }, splitLine: { lineStyle: { color: borde } },
+    axisLine: { lineStyle: { color: borde } }, splitArea: { show: false },
+  }, series: [{ type: "radar", data: [{ value: azar(7, 50) }],
+    areaStyle: { opacity: 0.25 }, lineStyle: { color: acento }, itemStyle: { color: acento } }] });
+}
+pintar();
+document.getElementById("datos").onclick = pintar;
+addEventListener("resize", () => [g1, g2, g3, g4].forEach((g) => g.resize()));
+</script>
+</body>
+</html>

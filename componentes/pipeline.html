@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline en vivo</title>
+<link rel="stylesheet" href="comun.css">
+<style> main { padding: 24px 20px; display: grid; gap: 14px; } </style>
+</head>
+<body>
+<header class="barra">
+  <h1>Pipeline en vivo</h1>
+  <a href="index.html">← catálogo</a>
+  <span style="margin-left:auto"></span>
+  <button class="accion" id="correr">Procesar</button>
+  <button class="accion" id="correr-mal" style="background:var(--carta);color:var(--texto);border:1px solid var(--borde)">Procesar con falla</button>
+</header>
+<main>
+  <div class="panel"><h2>Flujo del proceso</h2><div id="p"></div></div>
+  <p style="color:var(--tenue);max-width:640px">El componente expone activar, completar, fallar y reiniciar por etapa.
+  En una demo real, cada paso del backend llama a la etapa que corresponde y el
+  jurado ve el proceso moverse de verdad, no un video.</p>
+</main>
+<script type="module">
+import { crearPipeline } from "./pipeline.js";
+const p = crearPipeline(document.getElementById("p"),
+  ["Entrada", "Clasificar", "Buscar contexto", "Decidir", "Acción"]);
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+async function correr(falla) {
+  p.reiniciar();
+  p.activar(0); await espera(500); p.completar(0);
+  p.activar(1, "analizando"); await espera(900); p.completar(1, "nivel medio");
+  p.activar(2); await espera(900); p.completar(2, "3 documentos");
+  p.activar(3); await espera(800);
+  if (falla) { p.fallar(3, "revisión humana"); return; }
+  p.completar(3, "automático");
+  p.activar(4); await espera(500); p.completar(4, "notificado");
+}
+document.getElementById("correr").onclick = () => correr(false);
+document.getElementById("correr-mal").onclick = () => correr(true);
+correr(false);
+</script>
+</body>
+</html>

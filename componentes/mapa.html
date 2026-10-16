@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa con sitios y capa de calor</title>
+<link rel="stylesheet" href="comun.css">
+<link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+<style>
+  #mapa { height: calc(100vh - 60px); }
+  .control { position: absolute; top: 74px; right: 14px; z-index: 1000; }
+</style>
+</head>
+<body>
+<header class="barra">
+  <h1>Mapa con sitios y capa de calor</h1>
+  <a href="index.html">← catálogo</a>
+</header>
+<button class="accion control" id="alternar">Capa de calor</button>
+<div id="mapa"></div>
+<script src="../vendor/leaflet/leaflet.js"></script>
+<script src="../vendor/leaflet-heat.js"></script>
+<script>
+const mapa = L.map("mapa").setView([-42.0, -72.9], 8);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(mapa);
+
+// Sitios falsos con intensidad de actividad.
+const sitios = [];
+for (let i = 0; i < 40; i++) {
+  sitios.push({
+    lat: -41.3 - Math.random() * 1.6,
+    lng: -73.4 + Math.random() * 1.0,
+    peso: Math.random(),
+  });
+}
+for (const s of sitios.slice(0, 12)) {
+  L.circleMarker([s.lat, s.lng], {
+    radius: 7,
+    color: s.peso > 0.7 ? "#ff5d6c" : "#27c3e8",
+    fillOpacity: 0.7,
+  }).addTo(mapa).bindPopup(`intensidad: ${(s.peso * 100).toFixed(0)}%`);
+}
+
+const calor = L.heatLayer(sitios.map((s) => [s.lat, s.lng, s.peso]), { radius: 32, blur: 22 });
+let visible = false;
+document.getElementById("alternar").onclick = () => {
+  visible ? calor.remove() : calor.addTo(mapa);
+  visible = !visible;
+};
+</script>
+</body>
+</html>

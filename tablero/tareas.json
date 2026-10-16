@@ -1,0 +1,9 @@
+[
+  { "id": "t1", "titulo": "Leer el encargo y fijar alcance", "persona": "Ana", "bloque": "09:00-09:45", "estado": "lista", "depende_de": [] },
+  { "id": "t2", "titulo": "Levantar API base", "persona": "Ana", "bloque": "09:45-11:00", "estado": "en_curso", "depende_de": ["t1"] },
+  { "id": "t3", "titulo": "Conseguir y limpiar datos", "persona": "Beto", "bloque": "09:45-11:30", "estado": "en_curso", "depende_de": ["t1"] },
+  { "id": "t4", "titulo": "Primer borrador de la presentación", "persona": "Carla", "bloque": "10:00-12:00", "estado": "pendiente", "depende_de": ["t1"] },
+  { "id": "t5", "titulo": "Integrar datos a la API", "persona": "Ana", "bloque": "11:00-13:00", "estado": "pendiente", "depende_de": ["t2", "t3"] },
+  { "id": "t6", "titulo": "Validar reglas con un experto", "persona": "Beto", "bloque": "11:30-12:30", "estado": "pendiente", "depende_de": ["t3"] },
+  { "id": "t7", "titulo": "Ensayo general", "persona": "Carla", "bloque": "17:30-18:00", "estado": "pendiente", "depende_de": ["t5"] }
+]

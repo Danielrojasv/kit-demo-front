@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de componentes</title>
+<link rel="stylesheet" href="comun.css">
+<style>
+  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; padding: 16px 20px; }
+  a.tarjeta { display: block; text-decoration: none; color: inherit; }
+  a.tarjeta .panel:hover { border-color: var(--acento); }
+  .panel p { color: var(--tenue); margin: 6px 0 0; font-size: 13.5px; }
+</style>
+</head>
+<body>
+<header class="barra"><h1>Catálogo de componentes de demo</h1></header>
+<main>
+  <a class="tarjeta" href="dashboard.html"><div class="panel"><h2>Panel completo</h2>
+    <p>Dashboard armado: KPIs animados, mapa, feed de eventos, pipeline en vivo y reporte PDF descargable. El punto de partida para la demo.</p></div></a>
+  <a class="tarjeta" href="pipeline.html"><div class="panel"><h2>Pipeline en vivo</h2>
+    <p>Flujo de etapas que se ilumina mientras el backend procesa. Sin dependencias, API de 4 métodos.</p></div></a>
+  <a class="tarjeta" href="mapa.html"><div class="panel"><h2>Mapa + capa de calor</h2>
+    <p>Leaflet con tiles de OpenStreetMap (sin API key), marcadores con popup y heatmap de intensidad.</p></div></a>
+  <a class="tarjeta" href="graficos.html"><div class="panel"><h2>Gráficos animados</h2>
+    <p>ECharts: gauge de riesgo, serie suave con área, barras con retardo y radar semanal, en tema oscuro.</p></div></a>
+  <a class="tarjeta" href="../tablero/index.html"><div class="panel"><h2>Tablero de avance</h2>
+    <p>Kanban de tareas del plan del día: arrastrar entre estados, filtro por persona y atraso marcado en rojo automático. Requiere su servidor (node tablero/servidor.mjs).</p></div></a>
+</main>
+</body>
+</html>

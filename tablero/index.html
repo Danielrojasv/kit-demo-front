@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero de avance</title>
+<style>
+  :root {
+    --fondo: #0d1420; --panel: #141e2e; --carta: #1b2940;
+    --borde2: #2a3b57; --texto: #dce6f5; --tenue: #7e92b3; --acento: #27c3e8;
+    --ok: #3ddc97; --rojo: #ff5d6c; --ambar: #ffc764;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 15px/1.45 system-ui, sans-serif; }
+  header { display: flex; align-items: baseline; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--borde2); }
+  h1 { font-size: 17px; font-weight: 600; margin: 0; }
+  #reloj { color: var(--acento); font-variant-numeric: tabular-nums; }
+  #filtros { margin-left: auto; display: flex; gap: 8px; }
+  .chip { border: 1px solid var(--borde2); border-radius: 999px; padding: 3px 12px; cursor: pointer; color: var(--tenue); background: none; font-size: 13px; }
+  .chip.activo { color: var(--fondo); background: var(--acento); border-color: var(--acento); }
+  main { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 20px; }
+  .columna { background: var(--panel); border: 1px solid var(--borde2); border-radius: 12px; padding: 10px; min-height: 300px; }
+  .columna h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--tenue); margin: 4px 6px 10px; display: flex; justify-content: space-between; }
+  .columna.sobre { outline: 2px dashed var(--acento); }
+  .carta { background: var(--carta); border: 1px solid var(--borde2); border-left: 3px solid var(--acento); border-radius: 8px; padding: 9px 11px; margin-bottom: 8px; cursor: grab; }
+  .carta.atrasada { border-left-color: var(--rojo); }
+  .carta.atrasada .bloque { color: var(--rojo); font-weight: 600; }
+  .carta .titulo { font-weight: 500; }
+  .carta .meta { display: flex; gap: 10px; margin-top: 5px; font-size: 12.5px; color: var(--tenue); }
+  .persona { color: var(--acento); }
+  .dep { font-size: 11.5px; color: var(--ambar); margin-top: 3px; }
+  #estado-red { font-size: 12px; color: var(--tenue); margin-left: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Tablero de avance</h1>
+  <span id="reloj"></span>
+  <span id="estado-red"></span>
+  <div id="filtros"></div>
+</header>
+<main>
+  <section class="columna" data-estado="pendiente"><h2>Pendiente <span class="n"></span></h2></section>
+  <section class="columna" data-estado="en_curso"><h2>En curso <span class="n"></span></h2></section>
+  <section class="columna" data-estado="lista"><h2>Lista <span class="n"></span></h2></section>
+</main>
+<script>
+let tareas = [];
+let filtro = null;
+let arrastrando = null;
+
+const porId = (id) => tareas.find((t) => t.id === id);
+
+function finDeBloque(bloque) {
+  const m = /-(\d{2}):(\d{2})$/.exec(bloque ?? "");
+  if (!m) return null;
+  const d = new Date();
+  d.setHours(+m[1], +m[2], 0, 0);
+  return d;
+}
+
+function atrasada(t) {
+  if (t.estado === "lista") return false;
+  if (t.estado === "atrasada") return true;
+  const fin = finDeBloque(t.bloque);
+  return fin !== null && fin < new Date();
+}
+
+function pintar() {
+  const personas = [...new Set(tareas.map((t) => t.persona))];
+  const filtros = document.getElementById("filtros");
+  filtros.innerHTML = "";
+  for (const p of [null, ...personas]) {
+    const b = document.createElement("button");
+    b.className = "chip" + (filtro === p ? " activo" : "");
+    b.textContent = p ?? "Todos";
+    b.onclick = () => { filtro = p; pintar(); };
+    filtros.appendChild(b);
+  }
+  for (const col of document.querySelectorAll(".columna")) {
+    const estado = col.dataset.estado;
+    col.querySelectorAll(".carta").forEach((c) => c.remove());
+    const visibles = tareas.filter((t) =>
+      (t.estado === estado || (estado !== "lista" && t.estado === "atrasada" && estado === "en_curso")) &&
+      (!filtro || t.persona === filtro));
+    col.querySelector(".n").textContent = visibles.length || "";
+    for (const t of visibles) {
+      const c = document.createElement("article");
+      c.className = "carta" + (atrasada(t) ? " atrasada" : "");
+      c.draggable = true;
+      c.dataset.id = t.id;
+      const deps = (t.depende_de ?? []).filter((d) => porId(d) && porId(d).estado !== "lista");
+      c.innerHTML = `<div class="titulo"></div>
+        <div class="meta"><span class="persona"></span><span class="bloque"></span></div>
+        ${deps.length ? `<div class="dep">espera: ${deps.map((d) => porId(d).titulo).join(", ")}</div>` : ""}`;
+      c.querySelector(".titulo").textContent = t.titulo;
+      c.querySelector(".persona").textContent = t.persona;
+      c.querySelector(".bloque").textContent = t.bloque + (atrasada(t) ? " · ATRASADA" : "");
+      c.ondragstart = () => { arrastrando = t.id; };
+      col.appendChild(c);
+    }
+  }
+}
+
+for (const col of document.querySelectorAll(".columna")) {
+  col.ondragover = (e) => { e.preventDefault(); col.classList.add("sobre"); };
+  col.ondragleave = () => col.classList.remove("sobre");
+  col.ondrop = async (e) => {
+    e.preventDefault();
+    col.classList.remove("sobre");
+    const t = porId(arrastrando);
+    if (!t) return;
+    t.estado = col.dataset.estado;
+    pintar();
+    try {
+      await fetch("/tareas.json", { method: "PUT", body: JSON.stringify(tareas, null, 2) });
+      aviso("guardado");
+    } catch { aviso("sin conexión al servidor, cambio solo local"); }
+  };
+}
+
+function aviso(txt) {
+  document.getElementById("estado-red").textContent = txt;
+  setTimeout(() => { document.getElementById("estado-red").textContent = ""; }, 2500);
+}
+
+async function recargar() {
+  try {
+    const r = await fetch("/tareas.json", { cache: "no-store" });
+    const nuevas = await r.json();
+    if (JSON.stringify(nuevas) !== JSON.stringify(tareas) && arrastrando === null) {
+      tareas = nuevas;
+      pintar();
+    }
+  } catch { /* servidor caído: se mantiene lo local */ }
+}
+
+setInterval(recargar, 5000);
+setInterval(() => {
+  document.getElementById("reloj").textContent =
+    new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+  pintar();
+}, 30000);
+document.getElementById("reloj").textContent =
+  new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+recargar();
+</script>
+</body>
+</html>
