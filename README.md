@@ -43,6 +43,15 @@ El formato de `tablero/tareas.json`:
 Estados: `pendiente`, `en_curso`, `lista`, `atrasada` (el atraso también
 se calcula solo comparando el bloque horario con la hora actual).
 
+## Estilo
+
+Institucional sobrio: fondo claro frío, texto azul profundo, UN acento
+(teal, derivado de la identidad del equipo y oscurecido para cumplir
+contraste), estados ok/advertencia/peligro sobrios y nada decorativo.
+Los 14 pares texto/fondo del tema cumplen WCAG AA por cálculo (4.5:1
+texto normal, 3:1 componentes). Tokens en `componentes/comun.css`;
+`prefers-reduced-motion` respetado.
+
 ## Dependencias
 
 Vendorizadas en `vendor/` para funcionar sin red (los tiles del mapa sí

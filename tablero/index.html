@@ -6,21 +6,22 @@
 <title>Tablero de avance</title>
 <style>
   :root {
-    --fondo: #0d1420; --panel: #141e2e; --carta: #1b2940;
-    --borde2: #2a3b57; --texto: #dce6f5; --tenue: #7e92b3; --acento: #27c3e8;
-    --ok: #3ddc97; --rojo: #ff5d6c; --ambar: #ffc764;
+    --fondo: #F2F5F8; --panel: #FFFFFF; --carta: #F7FAFC;
+    --borde2: #D5DEE7; --texto: #0B2545; --tenue: #4A6076; --acento: #07708E;
+    --ok: #1D7A43; --rojo: #B3261E; --ambar: #8A5B00;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--fondo); color: var(--texto); font: 15px/1.45 system-ui, sans-serif; }
-  header { display: flex; align-items: baseline; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--borde2); }
-  h1 { font-size: 17px; font-weight: 600; margin: 0; }
-  #reloj { color: var(--acento); font-variant-numeric: tabular-nums; }
-  #filtros { margin-left: auto; display: flex; gap: 8px; }
-  .chip { border: 1px solid var(--borde2); border-radius: 999px; padding: 3px 12px; cursor: pointer; color: var(--tenue); background: none; font-size: 13px; }
-  .chip.activo { color: var(--fondo); background: var(--acento); border-color: var(--acento); }
+  body { margin: 0; background: var(--fondo); color: var(--texto); font: 15px/1.5 Roboto, -apple-system, system-ui, sans-serif; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px; padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--borde2); }
+  h1 { font-size: 17px; font-weight: 500; margin: 0; }
+  #reloj { color: var(--tenue); font-variant-numeric: tabular-nums; }
+  #filtros { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--borde2); border-radius: 999px; padding: 3px 12px; cursor: pointer; color: var(--tenue); background: var(--panel); font-size: 13px; }
+  .chip.activo { color: #fff; background: var(--acento); border-color: var(--acento); }
   main { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px 20px; }
-  .columna { background: var(--panel); border: 1px solid var(--borde2); border-radius: 12px; padding: 10px; min-height: 300px; }
-  .columna h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--tenue); margin: 4px 6px 10px; display: flex; justify-content: space-between; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } .columna { min-height: 120px; } }
+  .columna { background: var(--panel); border: 1px solid var(--borde2); border-radius: 10px; padding: 10px; min-height: 300px; }
+  .columna h2 { font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--tenue); font-weight: 500; margin: 4px 6px 10px; display: flex; justify-content: space-between; }
   .columna.sobre { outline: 2px dashed var(--acento); }
   .carta { background: var(--carta); border: 1px solid var(--borde2); border-left: 3px solid var(--acento); border-radius: 8px; padding: 9px 11px; margin-bottom: 8px; cursor: grab; }
   .carta.atrasada { border-left-color: var(--rojo); }

@@ -1,53 +1,74 @@
-/* Tema oscuro compartido de los componentes de demo. */
+/* Tema compartido: institucional sobrio, paleta derivada de la marca.
+   Contraste AA verificado por cálculo (ver README). */
 :root {
-  --fondo: #0d1420;
-  --panel: #141e2e;
-  --carta: #1b2940;
-  --borde: #2a3b57;
-  --texto: #dce6f5;
-  --tenue: #7e92b3;
-  --acento: #27c3e8;
-  --ok: #3ddc97;
-  --rojo: #ff5d6c;
-  --ambar: #ffc764;
+  --fondo: #F2F5F8;
+  --panel: #FFFFFF;
+  --carta: #F7FAFC;
+  --borde: #D5DEE7;
+  --texto: #0B2545;
+  --tenue: #4A6076;
+  --acento: #07708E;        /* derivado del cyan de marca, oscurecido para AA */
+  --acento-suave: #E1F2F7;
+  --acento-grafico: #0889AC; /* trazos grandes de gráficos y mapas (≥3:1) */
+  --ok: #1D7A43;
+  --ok-suave: #E3F2E8;
+  --rojo: #B3261E;
+  --rojo-suave: #FBE7E5;
+  --ambar: #8A5B00;
+  --ambar-suave: #FAF0DC;
+  --radio: 8px;
+  --transicion: 150ms ease;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
   background: var(--fondo);
   color: var(--texto);
-  font: 15px/1.45 system-ui, sans-serif;
+  font: 15px/1.5 Roboto, -apple-system, system-ui, sans-serif;
 }
 header.barra {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 14px;
+  gap: 10px 14px;
   padding: 14px 20px;
+  background: var(--panel);
   border-bottom: 1px solid var(--borde);
 }
-header.barra h1 { font-size: 17px; font-weight: 600; margin: 0; }
+header.barra h1 { font-size: 17px; font-weight: 500; margin: 0; }
 header.barra a { color: var(--tenue); text-decoration: none; font-size: 13px; }
 header.barra a:hover { color: var(--acento); }
 .panel {
   background: var(--panel);
   border: 1px solid var(--borde);
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: var(--radio);
+  padding: 16px;
+  min-width: 0;
 }
 .panel h2 {
-  font-size: 13px;
+  font-size: 12.5px;
   text-transform: uppercase;
   letter-spacing: .08em;
   color: var(--tenue);
-  margin: 0 0 10px;
+  font-weight: 500;
+  margin: 0 0 12px;
 }
 button.accion {
   background: var(--acento);
-  color: var(--fondo);
-  border: none;
-  border-radius: 8px;
+  color: #fff;
+  border: 1px solid var(--acento);
+  border-radius: var(--radio);
   padding: 8px 16px;
-  font-weight: 600;
+  font: 500 14px Roboto, system-ui, sans-serif;
   cursor: pointer;
+  transition: background var(--transicion);
 }
-button.accion:hover { filter: brightness(1.1); }
+button.accion:hover { background: #075A72; }
+button.accion.secundaria {
+  background: var(--panel);
+  color: var(--acento);
+}
+button.accion.secundaria:hover { background: var(--acento-suave); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -16,15 +16,16 @@ export function crearPipeline(el, etapas) {
 
   const estilo = document.createElement("style");
   estilo.textContent = `
-    .pl-caja { fill: var(--carta, #1b2940); stroke: var(--borde, #2a3b57); stroke-width: 1.5; rx: 10; }
-    .pl-texto { fill: var(--texto, #dce6f5); font: 600 14px system-ui, sans-serif; }
-    .pl-nota { fill: var(--tenue, #7e92b3); font: 11px system-ui, sans-serif; }
-    .pl-flecha { stroke: var(--borde, #2a3b57); stroke-width: 2; }
-    .pl-activa .pl-caja { stroke: var(--acento, #27c3e8); stroke-width: 2.5; filter: drop-shadow(0 0 6px var(--acento, #27c3e8)); }
-    .pl-ok .pl-caja { stroke: var(--ok, #3ddc97); stroke-width: 2.5; }
-    .pl-error .pl-caja { stroke: var(--rojo, #ff5d6c); stroke-width: 2.5; }
+    .pl-caja { fill: var(--carta, #F7FAFC); stroke: var(--borde, #D5DEE7); stroke-width: 1.5; rx: 10; }
+    .pl-texto { fill: var(--texto, #0B2545); font: 500 14px Roboto, system-ui, sans-serif; }
+    .pl-nota { fill: var(--tenue, #4A6076); font: 11px Roboto, system-ui, sans-serif; }
+    .pl-flecha { stroke: var(--borde, #D5DEE7); stroke-width: 2; }
+    .pl-activa .pl-caja { fill: var(--acento-suave, #E1F2F7); stroke: var(--acento, #07708E); stroke-width: 2.5; }
+    .pl-ok .pl-caja { fill: var(--ok-suave, #E3F2E8); stroke: var(--ok, #1D7A43); stroke-width: 2.5; }
+    .pl-error .pl-caja { fill: var(--rojo-suave, #FBE7E5); stroke: var(--rojo, #B3261E); stroke-width: 2.5; }
     .pl-pulso { animation: pl-late 1.1s ease-in-out infinite; }
-    @keyframes pl-late { 50% { opacity: .55; } }
+    @keyframes pl-late { 50% { opacity: .7; } }
+    @media (prefers-reduced-motion: reduce) { .pl-pulso { animation: none; } }
   `;
   el.prepend(estilo);
 

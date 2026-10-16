@@ -9,18 +9,25 @@
 <style>
   main { display: grid; grid-template-columns: 1.4fr 1fr; grid-template-rows: auto auto 1fr; gap: 14px; padding: 16px 20px; height: calc(100vh - 60px); }
   #kpis { grid-column: 1 / 3; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .kpi .valor { font-size: 30px; font-weight: 700; color: var(--acento); font-variant-numeric: tabular-nums; }
+  .kpi .valor { font-size: 30px; font-weight: 500; color: var(--texto); font-variant-numeric: tabular-nums; }
   .kpi .nombre { color: var(--tenue); font-size: 13px; margin-top: 2px; }
   #zona-pipeline { grid-column: 1 / 3; }
-  #mapa { height: 100%; min-height: 260px; border-radius: 8px; }
-  #feed { overflow-y: auto; max-height: 100%; }
-  .evento { border-left: 3px solid var(--acento); background: var(--carta); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; animation: entrar .35s ease; }
+  #mapa { height: 100%; min-height: 260px; border-radius: var(--radio); border: 1px solid var(--borde); }
+  #feed { overflow-y: auto; overflow-x: hidden; max-height: 100%; min-width: 0; }
+  .evento { border: 1px solid var(--borde); border-left: 3px solid var(--acento); background: var(--carta); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; animation: entrar .25s ease; }
   .evento.alta { border-left-color: var(--rojo); }
   .evento.media { border-left-color: var(--ambar); }
   .evento .hora { color: var(--tenue); font-size: 12px; }
-  @keyframes entrar { from { transform: translateX(14px); opacity: 0; } }
+  @keyframes entrar { from { opacity: 0; } }
   #panel-mapa, #panel-feed { display: flex; flex-direction: column; min-height: 0; }
   #panel-feed .cab { display: flex; justify-content: space-between; align-items: baseline; }
+  @media (max-width: 760px) {
+    main { grid-template-columns: 1fr; height: auto; }
+    #kpis, #zona-pipeline { grid-column: 1; }
+    #kpis { grid-template-columns: 1fr 1fr; }
+    #mapa { min-height: 220px; }
+    #feed { max-height: 320px; }
+  }
 </style>
 </head>
 <body>
@@ -29,7 +36,7 @@
   <a href="index.html">← catálogo</a>
   <span style="margin-left:auto"></span>
   <button class="accion" id="simular">Simular evento</button>
-  <button class="accion" id="descargar" style="background:var(--carta);color:var(--texto);border:1px solid var(--borde)">Descargar reporte</button>
+  <button class="accion secundaria" id="descargar">Descargar reporte</button>
 </header>
 <main>
   <div id="kpis">
@@ -82,7 +89,7 @@ const marcadores = {};
 for (const s of SITIOS) {
   marcadores[s.nombre] = L.circleMarker([s.lat, s.lng], {
     radius: 9,
-    color: s.estado === "alerta" ? "#ff5d6c" : "#27c3e8",
+    color: s.estado === "alerta" ? "#B3261E" : "#0889AC",
     fillOpacity: 0.7,
   }).addTo(mapa).bindPopup(`<b>${s.nombre}</b><br>estado: ${s.estado}`);
 }
