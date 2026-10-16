@@ -21,7 +21,7 @@ const TIPOS = {
 
 createServer(async (req, res) => {
   try {
-    if (req.url === "/tareas.json" && req.method === "PUT") {
+    if (req.url.endsWith("/tareas.json") && req.method === "PUT") {
       let cuerpo = "";
       for await (const trozo of req) cuerpo += trozo;
       JSON.parse(cuerpo); // valida antes de escribir

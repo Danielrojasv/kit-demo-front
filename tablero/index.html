@@ -114,7 +114,7 @@ for (const col of document.querySelectorAll(".columna")) {
     t.estado = col.dataset.estado;
     pintar();
     try {
-      await fetch("/tareas.json", { method: "PUT", body: JSON.stringify(tareas, null, 2) });
+      await fetch("tareas.json", { method: "PUT", body: JSON.stringify(tareas, null, 2) });
       aviso("guardado");
     } catch { aviso("sin conexión al servidor, cambio solo local"); }
   };
@@ -127,7 +127,7 @@ function aviso(txt) {
 
 async function recargar() {
   try {
-    const r = await fetch("/tareas.json", { cache: "no-store" });
+    const r = await fetch("tareas.json", { cache: "no-store" });
     const nuevas = await r.json();
     if (JSON.stringify(nuevas) !== JSON.stringify(tareas) && arrastrando === null) {
       tareas = nuevas;
