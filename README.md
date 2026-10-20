@@ -1,9 +1,9 @@
-# Kit de front para demos de agentes
+# Kit de interfaz Aquaitech
 
-Componentes de interfaz listos para armar la demo de un sistema con
-agentes en poco tiempo, más un tablero kanban para seguir el plan de
-trabajo de una jornada. Todo con datos sintéticos, tema oscuro y sin
-build: HTML, CSS y módulos ES planos.
+Componentes de interfaz de Aquaitech para los paneles y demos de sus
+productos. Sin build ni framework: HTML, CSS y módulos ES planos, con
+datos sintéticos de ejemplo. Es la base visual común de los productos
+propios, para que todos partan con la misma imagen.
 
 ## Qué trae
 
@@ -16,11 +16,11 @@ build: HTML, CSS y módulos ES planos.
 - `componentes/kpi.js`: contador animado para indicadores.
 - `componentes/mapa.html`: Leaflet + OpenStreetMap (sin API key) con
   marcadores y capa de calor.
-- `componentes/graficos.html`: ECharts en tema oscuro (gauge, línea,
-  barras, radar).
-- `tablero/`: kanban del plan del día. Lee `tareas.json`, las tarjetas
-  se arrastran entre estados (o un agente edita el archivo y la página
-  se actualiza sola) y lo que pasa de su bloque horario sin terminar se
+- `componentes/graficos.html`: ECharts (gauge, línea, barras, radar)
+  con la paleta del kit.
+- `tablero/`: kanban de tareas. Lee `tareas.json`, las tarjetas se
+  arrastran entre estados (o un proceso edita el archivo y la página se
+  actualiza sola) y lo que pasa de su bloque horario sin terminar se
   marca en rojo.
 
 ## Uso
@@ -45,12 +45,12 @@ se calcula solo comparando el bloque horario con la hora actual).
 
 ## Estilo
 
-Institucional sobrio: fondo claro frío, texto azul profundo, UN acento
-(teal, derivado de la identidad del equipo y oscurecido para cumplir
-contraste), estados ok/advertencia/peligro sobrios y nada decorativo.
-Los 14 pares texto/fondo del tema cumplen WCAG AA por cálculo (4.5:1
-texto normal, 3:1 componentes). Tokens en `componentes/comun.css`;
-`prefers-reduced-motion` respetado.
+Institucional sobrio, derivado de la identidad de Aquaitech: fondo
+claro frío, texto azul profundo, un único acento teal (el cyan de la
+marca oscurecido para cumplir contraste), estados ok/advertencia/peligro
+sobrios y nada decorativo. Los 14 pares texto/fondo del tema cumplen
+WCAG AA por cálculo (4.5:1 texto normal, 3:1 componentes). Tokens en
+`componentes/comun.css`; `prefers-reduced-motion` respetado.
 
 ## Dependencias
 
